@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,13 +12,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // Read in alarm from memory
+        // val = readfromMemoryAlarmList
+        // if (!val.isEmpty)
+        //  create / show alarm view which is
+        // a checkmark, "You are getting %f hours of sleep"
+        // checkmark has a click lsitener that disables the background process
     }
 
-    fun toastMe(view: View) {
-        // val myToast = Toast.makeText(this, message, duration)
-        val myToast = Toast.makeText(this, "Hello Toast!", Toast.LENGTH_SHORT)
-        myToast.show()
+
+    fun startAlarmDialog(view: View) {
+        val startAlarmIntent = Intent(this, AlarmDialog::class.java)
+
+        startActivity(startAlarmIntent)
     }
+
+//    fun toastMe(view: View) {
+//        // val myToast = Toast.makeText(this, message, duration)
+//        val myToast = Toast.makeText(this, "Hello Toast!", Toast.LENGTH_SHORT)
+//        myToast.show()
+//    }
 
     fun countMe(view: View) {
         // get the text view

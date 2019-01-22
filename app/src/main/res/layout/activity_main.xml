@@ -13,7 +13,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="11"
             android:text="@string/hello_world_text"
             app:fontFamily="sans-serif"
             android:textSize="72sp"
@@ -28,59 +28,58 @@
             />
 
     <Button
-            android:text="Toast"
+            android:text="@string/alarm_start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/toast_button"
             android:layout_marginTop="8dp"
             android:background="@color/buttonBackground"
-            android:onClick="toastMe"
+            android:onClick="startAlarmDialog"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:textAllCaps="false"
+            android:textSize="32sp"
             />
 
-    <Button
-            android:text="Count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/count_button"
-            android:background="@color/buttonBackground"
-            android:onClick="countMe"
-            app:layout_constraintStart_toEndOf="@+id/toast_button"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/random_button"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+    <!--<Button-->
+            <!--android:text="Count"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/count_button"-->
+            <!--android:background="@color/buttonBackground"-->
+            <!--android:onClick="countMe"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/toast_button"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/random_button"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textView"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--/>-->
 
-    <Button
-            android:text="Random"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/random_button"
-            android:layout_marginTop="8dp"
-            android:background="@color/buttonBackground"
-            android:onClick="randomMe"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="24dp"
-            />
+    <!--<Button-->
+            <!--android:text="Random"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/random_button"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:background="@color/buttonBackground"-->
+            <!--android:onClick="randomMe"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textView"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--android:layout_marginRight="24dp"-->
+            <!--/>-->
 
 
 
