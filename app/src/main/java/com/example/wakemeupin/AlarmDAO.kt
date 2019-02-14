@@ -5,15 +5,18 @@ import android.arch.persistence.room.*
 
 @Dao
 interface AlarmDAO {
-  @Query("SELECT * from Alarm ORDER BY id ASC")
+  @Query("SELECT * from alarm_table ORDER BY id ASC")
   fun getAllAlarms(): LiveData<List<Alarm>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insert(Alarm: alarm)
+  fun insert(alarm: Alarm)
 
   @Delete
-  fun delete(Alarm: alarm)
+  fun delete(alarm: Alarm)
 
   @Update
-  fun update(Alarm: alarm)
+  fun update(alarm: Alarm)
+
+  @Query("DELETE FROM alarm_table")
+  fun deleteAll()
 }

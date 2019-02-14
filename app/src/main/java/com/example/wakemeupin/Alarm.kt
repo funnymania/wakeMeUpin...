@@ -1,7 +1,11 @@
 package com.example.wakemeupin
 
+import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
-@Entity
-data class Alarm (@PrimaryKey val id: int)
+@Entity(tableName = "alarm_table")
+data class Alarm (
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int,
+  @ColumnInfo(name = "alarm_length") val alarmLength: Long
+)

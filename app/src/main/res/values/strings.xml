@@ -2,7 +2,11 @@
     <string name="app_name">Wake me up in...</string>
     <string name="hello_world_text"></string>
     <string name="random_heading">Here is a random # btwn 0 and %1d</string>
-    <string name="alarm_start">Wake me up in ...</string>
+    <string name="alarm_start">Wake me up in…</string>
     <string name="alarm_dialog_title">How many hours of sleep would you like to get? </string>
     <string name="start_alarm">Start Alarm</string>
+    <string name="hint_word">Word…</string>
+    <string name="empty_not_saved">Alarm not saved, yo</string>
+    <string name="channel_description">Notifies user of alarm</string>
+    <string name="channel_name">Protos Haste</string> (
 </resources>
