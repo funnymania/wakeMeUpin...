@@ -22,12 +22,13 @@ class Notifications {
     }
 
     fun createChannel(context: Context?) {
-      val v = longArrayOf(0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500)
-      val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
       notificationManager = context!!.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE)
               as NotificationManager
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val v = longArrayOf(0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500)
+        //TODO (SL) Read in file from user.
+        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         // Create the NotificationChannel
         val name = context.getString(R.string.channel_name)
         val descriptionText = context.getString(R.string.channel_description)

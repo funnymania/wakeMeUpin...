@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/open_alarm_dialog"
             android:background="@color/buttonBackground"
+            android:textColor="@color/colorText"
             android:textAllCaps="false"
             android:textSize="32sp"
             app:layout_anchorGravity="bottom|center"

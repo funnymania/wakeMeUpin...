@@ -12,17 +12,19 @@
             android:theme="@style/AppTheme">
         <activity android:name=".AlarmDialog">
         </activity>
-        <!--<activity android:name=".SecondActivity">-->
-        <!--</activity>-->
         <activity
                 android:name=".MainActivity"
                 android:label="Wake me up in..."
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".WakeUpActivity"
+                  android:launchMode="singleTask"
+                  android:taskAffinity=""
+                  android:excludeFromRecents="true">
         </activity>
         <receiver android:name=".AlarmReceiver"/>
     </application>

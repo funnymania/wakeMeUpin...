@@ -20,6 +20,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
   companion object {
     const val newAlarmActivityRequestCode = 1
+    lateinit var answerAlarmPendingIntent: PendingIntent
     private val LOG_TAG = MainActivity::class.java.name
     private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
@@ -54,6 +55,15 @@ class MainActivity : AppCompatActivity() {
     }
     Log.d(LOG_TAG, "alarmIntent")
 
+    // "Special" activity, to handle user answering the alarm
+    val answerAlarmIntent = Intent(this, WakeUpActivity::class.java).apply {
+      flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+    // TODO PendingIntent probably should not be static
+    answerAlarmPendingIntent = PendingIntent.getActivity(
+      this, 0, answerAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+    )
+
     val toolbar = findViewById<Toolbar>(R.id.toolbar)
     setSupportActionBar(toolbar)
 
@@ -75,7 +85,9 @@ class MainActivity : AppCompatActivity() {
         // Update the cached copy of the words in the adapter.
         alarms?.let { adapter.setAlarms(it) }
     })
+
     Log.d(LOG_TAG, "viewmodel")
+
     val wakeUpInButton = findViewById<Button>(R.id.open_alarm_dialog)
     wakeUpInButton.setOnClickListener {
       val intent = Intent(this@MainActivity, AlarmDialog::class.java)
@@ -124,23 +136,26 @@ class MainActivity : AppCompatActivity() {
 
         alarmViewModel.insert(alarm)
         Log.d("alarm", "Alarm saved for " + whenToSet.toString() + "ms from now")
+
+//        If notications needed, can set two alarms instead of one,
+//        one for notifications and one for bringing up the activity.
         when {
           Build.VERSION.SDK_INT >= 23 ->
             alarmMgr?.setExactAndAllowWhileIdle(
               AlarmManager.RTC_WAKEUP,
               whenToSet,
-              alarmIntent
+              answerAlarmPendingIntent
             )
           Build.VERSION.SDK_INT >= 19 ->
             alarmMgr?.setExact(
               AlarmManager.RTC_WAKEUP,
               whenToSet,
-              alarmIntent
+              answerAlarmPendingIntent
             )
           else -> alarmMgr?.set(
             AlarmManager.RTC_WAKEUP,
             whenToSet,
-            alarmIntent
+            answerAlarmPendingIntent
           )
         }
         Log.d("alarm", "Alarm has been scheduled for " + whenToSet.toString() + "ms from now")
