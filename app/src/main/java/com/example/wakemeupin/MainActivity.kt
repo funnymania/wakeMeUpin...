@@ -10,10 +10,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import android.content.Context
 import android.os.Build
+import android.view.MotionEvent
+import android.widget.NumberPicker
 import java.util.*
 
 
@@ -73,12 +74,24 @@ class MainActivity : AppCompatActivity() {
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(this)
 
-    // Read in alarm from memory
-    // val = readfromMemoryAlarmList
-    // if (!val.isEmpty)
-    //  create / show alarm view which is
-    // a checkmark, "You are getting %f hours of sleep"
-    // checkmark has a click lsitener that disables the background process
+    // TODO custom CoupledNumberPicker
+    val hourPicker = findViewById<NumberPicker>(R.id.numberPickerHours)
+    hourPicker.minValue = 0
+    hourPicker.maxValue = 23
+    hourPicker.value = 9
+
+    val minPicker = findViewById<NumberPicker>(R.id.numberPickerMinutes)
+    minPicker.minValue = 0
+    minPicker.maxValue = 59
+    minPicker.value = 0
+
+    hourPicker.setOnTouchListener { _, event ->
+      setAlarm(event, hourPicker, minPicker)
+    }
+
+    minPicker.setOnTouchListener { _, event ->
+      setAlarm(event, hourPicker, minPicker)
+    }
 
     alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel::class.java)
     alarmViewModel.allAlarms.observe(this, Observer { alarms ->
@@ -88,21 +101,80 @@ class MainActivity : AppCompatActivity() {
 
     Log.d(LOG_TAG, "viewmodel")
 
-    val wakeUpInButton = findViewById<Button>(R.id.open_alarm_dialog)
-    wakeUpInButton.setOnClickListener {
-      val intent = Intent(this@MainActivity, AlarmDialog::class.java)
-      startActivityForResult(intent, newAlarmActivityRequestCode)
-    }
-
     Notifications.createChannel(this)
+  }
 
-    // If alarm set, cancel it.
-    // alarmMgr?.cancel(alarmIntent)
+  fun setAlarm (
+      event: MotionEvent,
+      hourPicker: NumberPicker,
+      minPicker: NumberPicker
+  ): Boolean {
+    return when (event.action) {
+      MotionEvent.ACTION_UP -> {
+        val hoursMins = intArrayOf(hourPicker.value, minPicker.value)
+
+        val rightNow = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+
+        var hours = rightNow.get(Calendar.HOUR_OF_DAY) + hoursMins[0]
+        var minutes = rightNow.get(Calendar.MINUTE) + hoursMins[1]
+
+        if (minutes > 59) {
+          minutes -= 60
+          hours += 1
+        }
+
+        if (hours > 23) {
+          hours -= 24
+        }
+
+        val calendar = Calendar.getInstance().apply {
+          timeInMillis = System.currentTimeMillis()
+          timeZone = TimeZone.getTimeZone("UTC")
+          set(Calendar.HOUR_OF_DAY, hours)
+          set(Calendar.MINUTE, minutes)
+          set(Calendar.SECOND, 0)
+        }
+
+        val whenToSet = calendar.timeInMillis
+//          (hoursMins[0] * 3600000) + (hoursMins[1] * 60000).toLong()
+
+        val alarm = Alarm(0, whenToSet)
+
+        alarmViewModel.insert(alarm)
+        Log.d("alarm", "Alarm saved for " + whenToSet.toString() + "ms from now")
+
+//        If notications needed, can set two alarms instead of one,
+//        one for notifications and one for bringing up the activity.
+        when {
+          Build.VERSION.SDK_INT >= 23 ->
+            alarmMgr?.setExactAndAllowWhileIdle(
+              AlarmManager.RTC_WAKEUP,
+              whenToSet,
+              answerAlarmPendingIntent
+            )
+          Build.VERSION.SDK_INT >= 19 ->
+            alarmMgr?.setExact(
+              AlarmManager.RTC_WAKEUP,
+              whenToSet,
+              answerAlarmPendingIntent
+            )
+          else -> alarmMgr?.set(
+            AlarmManager.RTC_WAKEUP,
+            whenToSet,
+            answerAlarmPendingIntent
+          )
+        }
+        Log.d("alarm", "Alarm has been scheduled for " + whenToSet.toString() + "ms from now")
+
+        true
+      }
+      else -> false
+    }
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
-
+    Log.d(LOG_TAG, requestCode.toString())
     if (requestCode == newAlarmActivityRequestCode && resultCode == Activity.RESULT_OK) {
       data?.let {
         val hoursMins = it.getIntArrayExtra(AlarmDialog.EXTRA_REPLY)
